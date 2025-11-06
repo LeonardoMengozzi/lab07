@@ -5,6 +5,7 @@ import it.unibo.bank.api.BankAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -21,7 +22,8 @@ class TestStrictBankAccount {
      */
     @BeforeEach
     public void setUp() {
-        fail("To be implemented");
+        this.mRossi = new AccountHolder("Mario", "Rossi", 12);
+        this.bankAccount = new StrictBankAccount(this.mRossi, 0);
     }
 
     /**
@@ -29,7 +31,9 @@ class TestStrictBankAccount {
      */
     @Test
     public void testInitialization() {
-        fail("To be implemented");
+        assertEquals(0, this.bankAccount.getBalance());
+        assertEquals(0, this.bankAccount.getTransactionsCount());
+        assertEquals(this.mRossi, this.bankAccount.getAccountHolder());
     }
 
     /**
@@ -37,7 +41,10 @@ class TestStrictBankAccount {
      */
     @Test
     public void testManagementFees() {
-        fail("To be implemented");
+        this.bankAccount.deposit(12, 100);
+        assertEquals(100, this.bankAccount.getBalance());
+        this.bankAccount.chargeManagementFees(12);
+        assertEquals(94.9, this.bankAccount.getBalance());
     }
 
     /**
@@ -45,7 +52,11 @@ class TestStrictBankAccount {
      */
     @Test
     public void testNegativeWithdraw() {
-        fail("To be implemented");
+        try {
+            this.bankAccount.withdraw(12, -1);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
     }
 
     /**
@@ -53,6 +64,10 @@ class TestStrictBankAccount {
      */
     @Test
     public void testWithdrawingTooMuch() {
-        fail("To be implemented");
+        try {
+            this.bankAccount.withdraw(12, 2000);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
     }
 }
